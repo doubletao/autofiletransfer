@@ -193,6 +193,18 @@ void MainWindow::ExcuteTranferAction()
 
             lstTransferFile.append(it);
             commonfunc::Inst().commonfunc::WriteLog(QString("%1 传输完成").arg(it), true);
+
+            if (m_bDeleteAfterCopy)
+            {
+                if (QFile::remove(it))
+                {
+                    commonfunc::Inst().commonfunc::WriteLog(QString("%1 删除成功").arg(it), true);
+                }
+                else
+                {
+                    commonfunc::Inst().commonfunc::WriteLog(QString("%1 删除失败").arg(it), true);
+                }
+            }
         }
 
         //保存传输完成列表

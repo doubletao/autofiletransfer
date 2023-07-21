@@ -10,14 +10,17 @@ CONFIG += c++17
 
 SOURCES += \
     commonfunc/commonfunc.cpp \
+    configwidget.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     commonfunc/commonfunc.h \
+    configwidget.h \
     mainwindow.h
 
 FORMS += \
+    configwidget.ui \
     mainwindow.ui
 
 TRANSLATIONS += \

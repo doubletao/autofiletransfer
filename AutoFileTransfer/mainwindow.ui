@@ -56,7 +56,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTextEdit" name="textEdit_config">
+       <widget class="QPlainTextEdit" name="textEdit_config">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -65,9 +65,6 @@
         </property>
         <property name="horizontalScrollBarPolicy">
          <enum>Qt::ScrollBarAlwaysOff</enum>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -79,7 +76,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTextEdit" name="textEdit_log">
+       <widget class="QPlainTextEdit" name="textEdit_log">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -88,9 +85,6 @@
         </property>
         <property name="horizontalScrollBarPolicy">
          <enum>Qt::ScrollBarAlwaysOff</enum>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
         </property>
        </widget>
       </item>

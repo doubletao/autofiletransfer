@@ -6,6 +6,7 @@
 #include <list>
 #include <QSystemTrayIcon>
 #include <atomic>
+#include <set>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,19 +32,25 @@ private slots:
     void exit();
     void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
+    void on_btn_config_clicked();
+
 private:
     void InitTray();
     void ReadConfig();
     void WriteConfig();
+    bool copyFile(const QString& sourceFilePath, const QString& destinationDirectory);
+
+    QStringList loadStringListFromFile(const QString& filePath);
+    void saveStringListToFile(const QStringList& stringList, const QString& filePath);
 
     void ExcuteTranferAction();
+
+    std::set<QString> scanFilesRecursive(const QString& path);
 private:
     Ui::MainWindow *ui;
-
     QSystemTrayIcon* trayIcon;
-
     QTimer m_timer;
-    std::list<QString> m_lstLog;
+public:
     int m_nAutoScanTimeGap;
     QString m_strSrcDir;
     QString m_strDesDir;

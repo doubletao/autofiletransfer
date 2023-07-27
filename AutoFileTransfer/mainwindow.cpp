@@ -31,6 +31,12 @@ MainWindow::MainWindow(QWidget *parent)
     ReadConfig();
 
     m_bProcessRunning = false;
+
+    if (m_bAutoStartScan)
+    {
+        commonfunc::Inst().commonfunc::WriteLog("程序启动时自动开启扫描...", true);
+        on_btn_switch_clicked();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -120,9 +126,13 @@ void MainWindow::ReadConfig()
     m_strSrcDir = settings.value("path/srcDir", "").toString();
     m_strDesDir = settings.value("path/desDir", "").toString();
     m_bDeleteAfterCopy = settings.value("action/delAfterTransfer", false).toBool();
+    m_bAutoStartScan = settings.value("mission/autoStartScan", false).toBool();
+    m_bStartWhenPowerOn = settings.value("mission/startWhenPowerOn", false).toBool();
 
-    QString strConfigOverview = QString("扫描间隔：%1\n扫描目录：%2\n目标路径：%3\n拷贝完成后删除：%4")
-            .arg(m_nAutoScanTimeGap).arg(m_strSrcDir).arg(m_strDesDir).arg(m_bDeleteAfterCopy ? "是" : "否");
+    QString strConfigOverview = QString("扫描间隔：%1\n扫描目录：%2\n目标路径：%3\n拷贝完成后删除：%4\n程序启动时自动开启扫描：%5\n开机自动启动程序：%6")
+            .arg(m_nAutoScanTimeGap).arg(m_strSrcDir).arg(m_strDesDir).arg(m_bDeleteAfterCopy ? "是" : "否")
+            .arg(m_bAutoStartScan ? "是" : "否").arg(m_bStartWhenPowerOn ? "是" : "否");
+
     this->ui->textEdit_config->setPlainText(strConfigOverview);
 }
 
@@ -135,6 +145,8 @@ void MainWindow::WriteConfig()
     settings.setValue("path/srcDir", m_strSrcDir);
     settings.setValue("path/desDir", m_strDesDir);
     settings.setValue("action/delAfterTransfer", m_bDeleteAfterCopy);
+    settings.setValue("mission/autoStartScan", m_bAutoStartScan);
+    settings.setValue("mission/startWhenPowerOn", m_bStartWhenPowerOn);
 }
 
 bool MainWindow::copyFile(const QString& sourceFilePath, const QString& destinationDirectory)
@@ -242,12 +254,64 @@ std::set<QString> MainWindow::scanFilesRecursive(const QString &path)
 
 void MainWindow::on_btn_config_clicked()
 {
+    bool bStartWhenPowerOn = m_bStartWhenPowerOn;
     ConfigWidget ConfigWid(this);
     if (ConfigWid.exec() == QDialog::Accepted)
     {
         commonfunc::Inst().commonfunc::WriteLog("配置已保存", true);
         WriteConfig();
         ReadConfig();
+
+        if (bStartWhenPowerOn != m_bStartWhenPowerOn)
+        {
+            if (m_bStartWhenPowerOn)
+            {
+                commonfunc::Inst().commonfunc::WriteLog("尝试添加开机自启动...", true);
+
+                // 创建注册表设置对象
+                QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                                   QSettings::NativeFormat);
+
+                // 检查对象状态
+                if (settings.status() != QSettings::NoError) {
+                    commonfunc::Inst().commonfunc::WriteLog("注册表打开失败，请检查注册表修改权限...", true);
+                    return;
+                }
+
+                // 获取当前程序的路径
+                QString programPath = QCoreApplication::applicationFilePath();
+
+                // 设置自启动项
+                settings.setValue("AutoFileTransfer", programPath);
+
+                // 读取自启动项进行校验
+                QString value = settings.value("AutoFileTransfer").toString();
+                if (value == programPath) {
+                    commonfunc::Inst().commonfunc::WriteLog("自启动项添加成功.", true);
+                } else {
+                    commonfunc::Inst().commonfunc::WriteLog("自启动项添加失败，请检查注册表修改权限...", true);
+                }
+            }
+            else
+            {
+                commonfunc::Inst().commonfunc::WriteLog("尝试取消开机自启动...", true);
+
+                // 创建注册表设置对象
+                QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                                   QSettings::NativeFormat);
+
+                // 检查对象状态
+                if (settings.status() != QSettings::NoError) {
+                    commonfunc::Inst().commonfunc::WriteLog("注册表打开失败，请检查注册表修改权限...", true);
+                    return;
+                }
+
+                // 删除自启动项
+                settings.remove("AutoFileTransfer");
+
+                commonfunc::Inst().commonfunc::WriteLog("自启动项已删除.", true);
+            }
+        }
     }
 }
 

@@ -55,6 +55,8 @@ public:
     QString m_strSrcDir;
     QString m_strDesDir;
     bool m_bDeleteAfterCopy;
+    bool m_bAutoStartScan;
+    bool m_bStartWhenPowerOn;
     std::atomic_bool m_bProcessRunning;
 };
 #endif // MAINWINDOW_H

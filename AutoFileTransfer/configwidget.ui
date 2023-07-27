@@ -139,6 +139,20 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBox_autostart">
+     <property name="text">
+      <string>程序启动时自动开启扫描</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBox_startwhenpoweron">
+     <property name="text">
+      <string>开机自动启动程序</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

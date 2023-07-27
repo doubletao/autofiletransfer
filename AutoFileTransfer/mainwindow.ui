@@ -66,6 +66,9 @@
         <property name="horizontalScrollBarPolicy">
          <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -86,6 +89,9 @@
         <property name="horizontalScrollBarPolicy">
          <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
@@ -98,7 +104,7 @@
      <x>0</x>
      <y>0</y>
      <width>570</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

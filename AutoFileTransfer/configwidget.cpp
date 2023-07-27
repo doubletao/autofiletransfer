@@ -18,6 +18,8 @@ ConfigWidget::ConfigWidget(MainWindow *parent)
     this->ui->lineEdit_srcpath->setText(m_pMainWindow->m_strSrcDir);
     this->ui->lineEdit_despath->setText(m_pMainWindow->m_strDesDir);
     this->ui->checkBox_delsrc->setChecked(m_pMainWindow->m_bDeleteAfterCopy);
+    this->ui->checkBox_autostart->setChecked(m_pMainWindow->m_bAutoStartScan);
+    this->ui->checkBox_startwhenpoweron->setChecked(m_pMainWindow->m_bStartWhenPowerOn);
 }
 
 ConfigWidget::~ConfigWidget()
@@ -31,6 +33,8 @@ void ConfigWidget::on_pushButton_ok_clicked()
     m_pMainWindow->m_strSrcDir = this->ui->lineEdit_srcpath->text();
     m_pMainWindow->m_strDesDir = this->ui->lineEdit_despath->text();
     m_pMainWindow->m_bDeleteAfterCopy = this->ui->checkBox_delsrc->isChecked();
+    m_pMainWindow->m_bAutoStartScan = this->ui->checkBox_autostart->isChecked();
+    m_pMainWindow->m_bStartWhenPowerOn = this->ui->checkBox_startwhenpoweron->isChecked();
 
     accept();
 }

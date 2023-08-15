@@ -64,6 +64,7 @@ void MainWindow::on_btn_switch_clicked()
         commonfunc::Inst().commonfunc::WriteLog("定时传输已停止!", true);
         ui->btn_switch->setText("开始");
         this->ui->btn_config->setEnabled(true);
+        trayIcon->setToolTip("已停止");
     }
     else
     {
@@ -72,6 +73,7 @@ void MainWindow::on_btn_switch_clicked()
 
         ui->btn_switch->setText("停止");
         this->ui->btn_config->setEnabled(false);
+        trayIcon->setToolTip("运行中");
     }
 }
 
@@ -89,6 +91,7 @@ void MainWindow::trayActivated(QSystemTrayIcon::ActivationReason reason)
         // 显示或还原主窗口
         showNormal();
         this->activateWindow();
+        this->raise();
     }
 }
 
@@ -114,6 +117,8 @@ void MainWindow::InitTray()
 
     // 连接activated()信号到自定义槽函数
     connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::trayActivated);
+
+    trayIcon->setToolTip("已停止");
 }
 
 void MainWindow::ReadConfig()
